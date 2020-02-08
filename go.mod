@@ -1,4 +1,4 @@
-module github.com/valentergs/go-boilerplate
+module github.com/valentergs/booksv2
 
 go 1.13
 

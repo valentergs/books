@@ -1,6 +1,6 @@
 package controllers
 
-import "github.com/valentergs/go-boilerplate/api/middlewares"
+import "github.com/valentergs/booksv2/api/middlewares"
 
 func (s *Server) initializeRoutes() {
 
@@ -16,4 +16,10 @@ func (s *Server) initializeRoutes() {
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(s.GetUser)).Methods("GET")
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateUser))).Methods("PUT")
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteUser)).Methods("DELETE")
+
+	//Books routes
+	s.Router.HandleFunc("/books", middlewares.SetMiddlewareJSON(s.CreateBook)).Methods("POST")
+	s.Router.HandleFunc("/books", middlewares.SetMiddlewareJSON(s.GetBooks)).Methods("GET")
+	s.Router.HandleFunc("/books/{id}", middlewares.SetMiddlewareJSON(s.GetBook)).Methods("GET")
+	s.Router.HandleFunc("/books/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateBook))).Methods("PUT")
 }

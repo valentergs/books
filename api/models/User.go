@@ -13,10 +13,12 @@ import (
 )
 
 type User struct {
-	ID uint32 `gorm:"primary_key;auto_increment" json:"id"`
-	// Nickname  string    `gorm:"size:255;not null;unique" json:"nickname"`
+	ID        uint32    `gorm:"primary_key;auto_increment" json:"id"`
+	User      string    `gorm:"size:8;not null;unique" json:"user"`
 	Email     string    `gorm:"size:100;not null;unique" json:"email"`
 	Password  string    `gorm:"size:100;not null;" json:"password"`
+	Admin     bool      `gorm:"default:false;" json:"admin"`
+	Active    bool      `gorm:"default:true;" json:"active"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
@@ -143,8 +145,9 @@ func (u *User) UpdateAUser(db *gorm.DB, uid uint32) (*User, error) {
 		map[string]interface{}{
 			"password": u.Password,
 			// "nickname":  u.Nickname,
-			"email":     u.Email,
-			"update_at": time.Now(),
+			"email":      u.Email,
+			"updated_at": time.Now(),
+			"admin":      u.Admin,
 		},
 	)
 	if db.Error != nil {

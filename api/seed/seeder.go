@@ -4,36 +4,47 @@ import (
 	"log"
 
 	"github.com/jinzhu/gorm"
-	"github.com/valentergs/go-boilerplate/api/models"
+	"github.com/valentergs/booksv2/api/models"
 )
 
 var users = []models.User{
 	models.User{
-		Email:    "rodrigovalente@hotmail.com",
+		User:     "rova1976",
+		Email:    "valentergs@gmail.com",
 		Password: "Gustavo2012",
+		Admin:    true,
 	},
 	models.User{
+		User:     "vany1981",
 		Email:    "vanessa@gmail.com",
 		Password: "Gustavo2012",
+		Admin:    false,
 	},
-	models.User{
-		Email:    "eduardo@gmail.com",
-		Password: "Gustavo2012",
+}
+
+var books = []models.Book{
+	models.Book{
+		ISBN:   "9788554126254",
+		Titulo: "O Sol Ainda Brilha",
+		Autor:  "Anthony Ray Hinton",
+		Slug:   "o-sol-ainda-brilha",
 	},
-	models.User{
-		Email:    "gustavo@gmail.com",
-		Password: "Gustavo2012",
+	models.Book{
+		ISBN:   "9788551005767",
+		Titulo: "A Quietude é a Chave",
+		Autor:  "Ryan Holiday",
+		Slug:   "a-quietude-é-a-chave",
 	},
 }
 
 func Load(db *gorm.DB) {
 
-	err := db.Debug().DropTableIfExists(&models.User{}).Error
+	err := db.Debug().DropTableIfExists(&models.User{}, &models.Book{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
 
-	err = db.Debug().AutoMigrate(&models.User{}).Error
+	err = db.Debug().AutoMigrate(&models.User{}, &models.Book{}).Error
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
 	}
@@ -48,12 +59,12 @@ func Load(db *gorm.DB) {
 		if err != nil {
 			log.Fatalf("cannot seed users table: %v", err)
 		}
-		// posts[i].AuthorID = users[i].ID
 	}
 
-	// 	err = db.Debug().Model(&models.Post{}).Create(&posts[i]).Error
-	// 	if err != nil {
-	// 		log.Fatalf("cannot seed posts table: %v", err)
-	// 	}
-	// }
+	for i, _ := range books {
+		err = db.Debug().Model(&models.Book{}).Create(&books[i]).Error
+		if err != nil {
+			log.Fatalf("cannot seed books table: %v", err)
+		}
+	}
 }

@@ -9,10 +9,10 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/valentergs/go-boilerplate/api/auth"
-	"github.com/valentergs/go-boilerplate/api/models"
-	"github.com/valentergs/go-boilerplate/api/responses"
-	"github.com/valentergs/go-boilerplate/api/utils/formaterror"
+	"github.com/valentergs/booksv2/api/auth"
+	"github.com/valentergs/booksv2/api/models"
+	"github.com/valentergs/booksv2/api/responses"
+	"github.com/valentergs/booksv2/api/utils/formaterror"
 )
 
 func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
@@ -33,6 +33,7 @@ func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
+	user.ValidateUser()
 	userCreated, err := user.SaveUser(server.DB)
 
 	if err != nil {
@@ -146,5 +147,6 @@ func (server *Server) DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Entity", fmt.Sprintf("%d", uid))
-	responses.JSON(w, http.StatusNoContent, "")
+	SuccessMessage := "Usuário deletado com sucesso"
+	responses.JSON(w, http.StatusOK, SuccessMessage)
 }

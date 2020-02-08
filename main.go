@@ -1,6 +1,6 @@
 package main
 
-import "github.com/valentergs/go-boilerplate/api"
+import "github.com/valentergs/booksv2/api"
 
 func main() {
 	api.Run()

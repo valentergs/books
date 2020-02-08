@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/valentergs/go-boilerplate/api/responses"
+	"github.com/valentergs/booksv2/api/responses"
 )
 
 func (server *Server) Home(w http.ResponseWriter, r *http.Request) {

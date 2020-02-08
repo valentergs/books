@@ -10,7 +10,7 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
-	"github.com/valentergs/go-boilerplate/api/models"
+	"github.com/valentergs/booksv2/api/models"
 )
 
 type Server struct {

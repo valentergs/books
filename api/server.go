@@ -6,8 +6,8 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/valentergs/go-boilerplate/api/controllers"
-	"github.com/valentergs/go-boilerplate/api/seed"
+	"github.com/valentergs/booksv2/api/controllers"
+	"github.com/valentergs/booksv2/api/seed"
 )
 
 var server = controllers.Server{}

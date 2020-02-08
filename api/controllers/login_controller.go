@@ -5,10 +5,10 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/valentergs/go-boilerplate/api/auth"
-	"github.com/valentergs/go-boilerplate/api/models"
-	"github.com/valentergs/go-boilerplate/api/responses"
-	"github.com/valentergs/go-boilerplate/api/utils/formaterror"
+	"github.com/valentergs/booksv2/api/auth"
+	"github.com/valentergs/booksv2/api/models"
+	"github.com/valentergs/booksv2/api/responses"
+	"github.com/valentergs/booksv2/api/utils/formaterror"
 	"golang.org/x/crypto/bcrypt"
 )
 
