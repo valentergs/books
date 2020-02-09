@@ -45,7 +45,7 @@ func (u *User) BeforeSave() error {
 
 func (u *User) Prepare() {
 	u.ID = 0
-	// u.Nickname = html.EscapeString(strings.TrimSpace(u.Nickname))
+	u.User = strings.Replace(u.User, " ", "", -1)
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
 	u.CreatedAt = time.Now()
 	u.UpdatedAt = time.Now()
@@ -54,10 +54,10 @@ func (u *User) Prepare() {
 // Validar informações de acesso do usuario caso email e senha estejam em branco ou formato do e-mail seja inválidos
 func (u *User) Validate(action string) error {
 	switch strings.ToLower(action) {
-	case "update":
-		// if u.Nickname == "" {
-		// 	return errors.New("Required Nickname")
-		// }
+	case "create":
+		if len(u.User) < 4 || len(u.User) > 8 {
+			return errors.New("Usuário precisa ter no minimo 4 e no máximo 8 caracteres")
+		}
 		if u.Password == "" {
 			return errors.New("Senha obrigatória")
 		}
@@ -67,7 +67,20 @@ func (u *User) Validate(action string) error {
 		if err := checkmail.ValidateFormat(u.Email); err != nil {
 			return errors.New("Email inválido")
 		}
-
+		return nil
+	case "update":
+		if u.User == "" {
+			return errors.New("Usuário obrigatório")
+		}
+		if u.Password == "" {
+			return errors.New("Senha obrigatória")
+		}
+		if u.Email == "" {
+			return errors.New("Email obrigatório")
+		}
+		if err := checkmail.ValidateFormat(u.Email); err != nil {
+			return errors.New("Email inválido")
+		}
 		return nil
 	case "login":
 		if u.Password == "" {
@@ -82,9 +95,9 @@ func (u *User) Validate(action string) error {
 		return nil
 
 	default:
-		// if u.Nickname == "" {
-		// 	return errors.New("Required Nickname")
-		// }
+		if u.User == "" {
+			return errors.New("Senha obrigatória")
+		}
 		if u.Password == "" {
 			return errors.New("Senha obrigatória")
 		}
@@ -143,8 +156,8 @@ func (u *User) UpdateAUser(db *gorm.DB, uid uint32) (*User, error) {
 	}
 	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
 		map[string]interface{}{
-			"password": u.Password,
-			// "nickname":  u.Nickname,
+			"password":   u.Password,
+			"user":       u.User,
 			"email":      u.Email,
 			"updated_at": time.Now(),
 			"admin":      u.Admin,

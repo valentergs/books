@@ -31,6 +31,9 @@ func (b *Book) Prepare() {
 func (b *Book) Validate(action string) error {
 	switch strings.ToLower(action) {
 	case "create":
+		if len(b.ISBN) != 13 {
+			return errors.New("ISBN inválido")
+		}
 		if b.Titulo == "" {
 			return errors.New("Titulo não pode estar em branco")
 		}
@@ -39,6 +42,9 @@ func (b *Book) Validate(action string) error {
 		}
 		return nil
 	case "update":
+		if len(b.ISBN) != 13 {
+			return errors.New("ISBN inválido")
+		}
 		if b.Titulo == "" {
 			return errors.New("Titulo não pode estar em branco")
 		}
@@ -47,6 +53,9 @@ func (b *Book) Validate(action string) error {
 		}
 		return nil
 	default:
+		if len(b.ISBN) != 13 {
+			return errors.New("ISBN inválido")
+		}
 		if b.Titulo == "" {
 			return errors.New("Titulo não pode estar em branco")
 		}
@@ -94,6 +103,7 @@ func (b *Book) UpdateABook(db *gorm.DB, bid uint32) (*Book, error) {
 		map[string]interface{}{
 			"isbn":       b.ISBN,
 			"titulo":     b.Titulo,
+			"slug":       b.Slug,
 			"autor":      b.Autor,
 			"idioma":     b.Idioma,
 			"formato":    b.Formato,
@@ -103,13 +113,11 @@ func (b *Book) UpdateABook(db *gorm.DB, bid uint32) (*Book, error) {
 	if db.Error != nil {
 		return &Book{}, db.Error
 	}
-
 	err := db.Debug().Model(&Book{}).Where("id = ?", bid).Take(&b).Error
 	if err != nil {
 		return &Book{}, err
 	}
 	return b, nil
-
 }
 
 func (b *Book) DeleteABook(db *gorm.DB, bid uint32) (int64, error) {

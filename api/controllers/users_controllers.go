@@ -28,12 +28,12 @@ func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user.Prepare()
-	err = user.Validate("")
+	err = user.Validate("create")
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
-	user.ValidateUser()
+
 	userCreated, err := user.SaveUser(server.DB)
 
 	if err != nil {

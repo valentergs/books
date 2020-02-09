@@ -2,13 +2,12 @@ package controllers
 
 import (
 	"encoding/json"
-	"errors"
+	//"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/valentergs/booksv2/api/auth"
 	"github.com/valentergs/booksv2/api/models"
 	"github.com/valentergs/booksv2/api/responses"
 	"github.com/valentergs/booksv2/api/utils/formaterror"
@@ -69,15 +68,6 @@ func (server *Server) UpdateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	json.NewDecoder(r.Body).Decode(&book)
-	tokenID, err := auth.ExtractTokenID(r)
-	if err != nil {
-		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
-		return
-	}
-	if tokenID != uint32(bid) {
-		responses.ERROR(w, http.StatusUnauthorized, errors.New(http.StatusText(http.StatusUnauthorized)))
-		return
-	}
 	book.Prepare()
 	err = book.Validate("update")
 	if err != nil {
