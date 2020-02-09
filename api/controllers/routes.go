@@ -20,6 +20,6 @@ func (s *Server) initializeRoutes() {
 	//Books routes
 	s.Router.HandleFunc("/books", middlewares.SetMiddlewareJSON(s.CreateBook)).Methods("POST")
 	s.Router.HandleFunc("/books", middlewares.SetMiddlewareJSON(s.GetBooks)).Methods("GET")
-	s.Router.HandleFunc("/books/{id}", middlewares.SetMiddlewareJSON(s.GetBook)).Methods("GET")
+	s.Router.HandleFunc("/books/{isbn}", middlewares.SetMiddlewareJSON(s.GetBook)).Methods("GET")
 	s.Router.HandleFunc("/books/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateBook))).Methods("PUT")
 }

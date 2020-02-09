@@ -2,10 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
-	//"errors"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/valentergs/booksv2/api/models"
@@ -45,13 +43,9 @@ func (server *Server) GetBooks(w http.ResponseWriter, r *http.Request) {
 
 func (server *Server) GetBook(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	bid, err := strconv.Atoi(params["id"])
-	if err != nil {
-		responses.ERROR(w, http.StatusBadRequest, err)
-		return
-	}
+	isbn := params["isbn"]
 	book := models.Book{}
-	bookGotten, err := book.FindBookByID(server.DB, uint32(bid))
+	bookGotten, err := book.FindBookByISBN(server.DB, isbn)
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
@@ -62,19 +56,15 @@ func (server *Server) GetBook(w http.ResponseWriter, r *http.Request) {
 func (server *Server) UpdateBook(w http.ResponseWriter, r *http.Request) {
 	book := models.Book{}
 	params := mux.Vars(r)
-	bid, err := strconv.Atoi(params["id"])
-	if err != nil {
-		responses.ERROR(w, http.StatusUnprocessableEntity, err)
-		return
-	}
+	isbn := params["isbn"]
 	json.NewDecoder(r.Body).Decode(&book)
 	book.Prepare()
-	err = book.Validate("update")
+	err := book.Validate("update")
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
 	}
-	updatedBook, err := book.UpdateABook(server.DB, uint32(bid))
+	updatedBook, err := book.UpdateABook(server.DB, isbn)
 	if err != nil {
 		formattedError := formaterror.FormatError(err.Error())
 		responses.ERROR(w, http.StatusInternalServerError, formattedError)

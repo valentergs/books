@@ -85,9 +85,9 @@ func (b *Book) FindAllBooks(db *gorm.DB) (*[]Book, error) {
 	return &book, err
 }
 
-func (b *Book) FindBookByID(db *gorm.DB, bid uint32) (*Book, error) {
+func (b *Book) FindBookByISBN(db *gorm.DB, isbn string) (*Book, error) {
 	var err error
-	err = db.Debug().Model(Book{}).Where("id = ?", bid).Take(&b).Error
+	err = db.Debug().Model(Book{}).Where("isbn = ?", isbn).Take(&b).Error
 	if err != nil {
 		return &Book{}, err
 	}
@@ -97,9 +97,9 @@ func (b *Book) FindBookByID(db *gorm.DB, bid uint32) (*Book, error) {
 	return b, err
 }
 
-func (b *Book) UpdateABook(db *gorm.DB, bid uint32) (*Book, error) {
+func (b *Book) UpdateABook(db *gorm.DB, isbn string) (*Book, error) {
 
-	db = db.Debug().Model(&Book{}).Where("id = ?", bid).Take(&Book{}).UpdateColumns(
+	db = db.Debug().Model(&Book{}).Where("isbn = ?", isbn).Take(&Book{}).UpdateColumns(
 		map[string]interface{}{
 			"isbn":       b.ISBN,
 			"titulo":     b.Titulo,
@@ -113,7 +113,7 @@ func (b *Book) UpdateABook(db *gorm.DB, bid uint32) (*Book, error) {
 	if db.Error != nil {
 		return &Book{}, db.Error
 	}
-	err := db.Debug().Model(&Book{}).Where("id = ?", bid).Take(&b).Error
+	err := db.Debug().Model(&Book{}).Where("isbn = ?", isbn).Take(&b).Error
 	if err != nil {
 		return &Book{}, err
 	}
