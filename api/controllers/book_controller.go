@@ -21,7 +21,6 @@ func (server *Server) CreateBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	bookCreated, err := book.SaveBook(server.DB)
-
 	if err != nil {
 		formattedError := formaterror.FormatError(err.Error())
 		responses.ERROR(w, http.StatusInternalServerError, formattedError)

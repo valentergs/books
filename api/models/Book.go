@@ -2,10 +2,12 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"time"
 
 	"github.com/jinzhu/gorm"
+	"github.com/valentergs/booksv2/api/utils"
 )
 
 type Book struct {
@@ -17,6 +19,7 @@ type Book struct {
 	Autor     string    `gorm:"type:varchar(256)" json:"autor"`
 	Idioma    string    `gorm:"default:'Português'" json:"idioma"`
 	Formato   string    `gorm:"default:'Capa comum'" json:"formato"`
+	Capa      string    `gorm:"type:varchar(256)" json:"capa"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
@@ -24,8 +27,10 @@ type Book struct {
 func (b *Book) Prepare() {
 	b.Slug = strings.Replace(b.Titulo, " ", "-", -1)
 	b.Slug = strings.ToLower(b.Slug)
+	b.Capa = utils.PhotoLink(b.ISBN)
 	b.CreatedAt = time.Now()
 	b.UpdatedAt = time.Now()
+	fmt.Println(b.Capa)
 }
 
 func (b *Book) Validate(action string) error {
