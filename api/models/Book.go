@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"strings"
 	"time"
 
@@ -17,6 +16,7 @@ type Book struct {
 	Slug   string `gorm:"type:varchar(256)" json:"Slug"`
 	// Autores []*Autor `gorm:"many2many:livro_autor;" json:"autores"`
 	Autor     string    `gorm:"type:varchar(256)" json:"autor"`
+	Cdd       string    `gorm:"type:varchar(15)" json:"cdd"`
 	Idioma    string    `gorm:"default:'Português'" json:"idioma"`
 	Formato   string    `gorm:"default:'Capa comum'" json:"formato"`
 	Capa      string    `gorm:"type:varchar(256)" json:"capa"`
@@ -30,7 +30,6 @@ func (b *Book) Prepare() {
 	b.Capa = utils.PhotoLink(b.ISBN)
 	b.CreatedAt = time.Now()
 	b.UpdatedAt = time.Now()
-	fmt.Println(b.Capa)
 }
 
 func (b *Book) Validate(action string) error {
@@ -110,6 +109,7 @@ func (b *Book) UpdateABook(db *gorm.DB, isbn string) (*Book, error) {
 			"titulo":     b.Titulo,
 			"slug":       b.Slug,
 			"autor":      b.Autor,
+			"cdd":        b.Cdd,
 			"idioma":     b.Idioma,
 			"formato":    b.Formato,
 			"updated_at": time.Now(),

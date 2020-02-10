@@ -28,12 +28,16 @@ var books = []models.Book{
 		Titulo: "O Sol Ainda Brilha",
 		Autor:  "Anthony Ray Hinton",
 		Slug:   "o-sol-ainda-brilha",
+		Cdd:    "823",
+		Capa:   "https://images-na.ssl-images-amazon.com/images/I/81BcnC+VFYL.jpg",
 	},
 	models.Book{
 		ISBN:   "9788551005767",
 		Titulo: "A Quietude é a Chave",
 		Autor:  "Ryan Holiday",
 		Slug:   "a-quietude-é-a-chave",
+		Cdd:    "500",
+		Capa:   "https://images-na.ssl-images-amazon.com/images/I/81BcnC+VFYL.jpg",
 	},
 }
 
