@@ -2,7 +2,9 @@ version: "3"
 services:
   app:
     container_name: go
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - 8080:8080
     restart: on-failure
@@ -42,6 +44,13 @@ services:
     networks:
       - gonetwork
     restart: unless-stopped
+
+  nginx:
+    build: "./nginx"
+    ports:
+      - "80:80"
+    depends_on:
+      - api_postgres
 
 volumes:
   api:
