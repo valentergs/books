@@ -16,6 +16,10 @@ spec:
         app: books # Nome to aplicativo
         tier: postgres
     spec:
+      volumes:
+        - name: psql-storage
+          persistentVolumeClaim:
+            claimName: psql-pvc
       containers:
         - image: postgres:latest
           name: postgres
@@ -23,14 +27,15 @@ spec:
           envFrom:
             - secretRef:
                 name: psql-secret
-
           ports:
             - containerPort: 5432
               name: postgres
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data # Lugar de instalação do PSQL
-              name: postgres-persistent-storage
-      volumes:
-        - name: postgres-persistent-storage
-          persistentVolumeClaim:
-            claimName: psql-pv-claim
+            # - mountPath: /var/lib/postgresql/data # Lugar de instalação do PSQL
+            - mountPath: /usr/local/var/postgres # Lugar de instalação do PSQL
+              name: psql-storage
+              subPath: postgres
+      # volumes:
+      #   - name: postgres-persistent-storage
+      #     persistentVolumeClaim:
+      #       claimName: psql-pv-claim
