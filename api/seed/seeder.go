@@ -25,7 +25,7 @@ var users = []models.User{
 var books = []models.Book{
 	models.Book{
 		ISBN:   "9788554126254",
-		Titulo: "O Sol Ainda Brilha",
+		Titulo: "O Sol já Brilhou!!!",
 		Autor:  "Anthony Ray Hinton",
 		Slug:   "o-sol-ainda-brilha",
 		Cdd:    "823",
