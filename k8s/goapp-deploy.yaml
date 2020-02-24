@@ -5,7 +5,7 @@ metadata:
   labels:
     app: books
 spec:
-  replicas: 8
+  replicas: 1
   selector:
     matchLabels:
       app: books
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: books
-          image: valentergs/books:2.0.0
+          image: valentergs/books:V2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

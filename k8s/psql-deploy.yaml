@@ -31,11 +31,6 @@ spec:
             - containerPort: 5432
               name: postgres
           volumeMounts:
-            # - mountPath: /var/lib/postgresql/data # Lugar de instalação do PSQL
-            - mountPath: /usr/local/var/postgres # Lugar de instalação do PSQL
+            - mountPath: /usr/local/var/postgres #/var/lib/postgresql/data # Lugar de instalação do PSQL
               name: psql-storage
-              subPath: postgres
-      # volumes:
-      #   - name: postgres-persistent-storage
-      #     persistentVolumeClaim:
-      #       claimName: psql-pv-claim
+              subPath: postgres # nome da folder no volume claim
