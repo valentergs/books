@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: psql-deploy
+  labels:
+    app: books # Nome to aplicativo
+spec:
+  selector:
+    matchLabels:
+      app: books # Nome to aplicativo
+      tier: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: books # Nome to aplicativo
+        tier: postgres
+    spec:
+      volumes:
+        - name: psql-storage
+          persistentVolumeClaim:
+            claimName: psql-pvc
+      containers:
+        - image: postgres:latest
+          name: postgres
+          imagePullPolicy: "IfNotPresent"
+          envFrom:
+            - secretRef:
+                name: psql-secret
+          ports:
+            - containerPort: 5432
+              name: postgres
+          volumeMounts:
+            - mountPath: /usr/local/var/postgres #/var/lib/postgresql/data # Lugar de instalação do PSQL
+              name: psql-storage
+              subPath: postgres # nome da folder no volume claim
